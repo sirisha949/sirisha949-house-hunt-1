@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password - House Rental System</title>
+    <style>
+        /* Reset default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a; /* Dark background */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative; /* Position relative for the background blur */
+            overflow: hidden; /* Hide any overflow */
+        }
+
+        /* Background image with blur effect */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('26.jpg') no-repeat center center/cover;
+            filter: blur(20px); /* Increased blur effect */
+            z-index: -1;
+        }
+
+        /* Forgot password container styles */
+        .forgot-password-container {
+            background-color: rgba(0, 0, 0, 0.5); /* Transparent black background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
+            width: 300px;
+            text-align: center;
+            position: relative; /* Ensure it stays above the background */
+        }
+
+        /* Forgot password form styles */
+        .forgot-password-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .forgot-password-form h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.8); /* Light background for readability */
+        }
+
+        button[type="submit"] {
+            padding: 10px;
+            background-color: #FF5733;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #C70039;
+        }
+
+        /* Back to login link styles */
+        .back-to-login-link {
+            margin-top: 10px;
+        }
+
+        .back-to-login-link a {
+            color: #FF5733;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-to-login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="forgot-password-container">
+        <form id="forgot-password-form" class="forgot-password-form">
+            <h2>Forgot Password</h2>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        <div class="back-to-login-link">
+            <p><a href="login.html">Back to Login</a></p>
+        </div>
+    </div>
+    <script>
+        document.getElementById('forgot-password-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+
+            try {
+                const response = await fetch('/forgot-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    window.location.href = `resetpass.html?token=${result.token}`;
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>
+

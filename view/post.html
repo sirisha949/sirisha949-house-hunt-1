@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Your House - House Rental System</title>
+    <style>
+        /* Reset default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222121; /* Dark background */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Post house container styles */
+        .post-house-container {
+            background-color: rgba(17, 16, 16, 0.7); /* Semi-transparent black background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
+            width: 600px; /* Increased width */
+            text-align: center;
+        }
+
+        /* Post house form styles */
+        .post-house-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .post-house-form h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            margin-top: 20px; /* Added margin to ensure visibility */
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            width: 100%; /* Make form-group take full width */
+        }
+
+        .form-group label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 10px;
+            width: 100%; /* Make input, textarea, select take full width */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .form-group input[type="file"] {
+            padding: 8px;
+        }
+
+        button[type="submit"] {
+            padding: 10px;
+            background-color: #FF5733;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 100%; /* Make button take full width */
+        }
+
+        button[type="submit"]:hover {
+            background-color: #C70039;
+        }
+    </style>
+</head>
+<body>
+    <div class="post-house-container">
+        <h1 style="margin-bottom: 20px;">House Rental System</h1> <!-- Added margin-bottom to the heading -->
+        <form action="/post-house" method="POST" enctype="multipart/form-data" class="post-house-form">
+
+            <h2>Post Your House</h2>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" placeholder="Enter title for your house listing" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Enter description of your house" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" placeholder="Enter location of your house" required>
+            </div>
+            <div class="form-group">
+                <label for="locationLink">Location Link</label>
+                <input type="url" id="locationLink" name="locationLink" placeholder="Enter location link of your house">
+            </div>
+            <div class="form-group">
+                <label for="price">Price ($)</label>
+                <input type="number" id="price" name="price" placeholder="Enter price per month" required>
+            </div>
+            <div class="form-group">
+                <label for="houseType">Type of House</label>
+                <select id="houseType" name="houseType" required>
+                    <option value="" disabled selected>Select house type</option>
+                    <option value="individual">Individual House</option>
+                    <option value="apartment">Apartment</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" pattern="\d{10}" title="Please enter a 10-digit phone number" placeholder="Enter your phone number" required>
+            </div>
+            <div class="form-group">
+                <label for="image">Upload Image</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+            </div>
+            <button type="submit">Post</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+
+

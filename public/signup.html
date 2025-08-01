@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Sign Up - House Rental System</title>
+    <style>
+        /* Reset default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a; /* Dark background */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative; /* Position relative for the back button */
+            overflow: hidden; /* Hide any overflow */
+        }
+
+        /* Background image with blur effect */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('26.jpg') no-repeat center center/cover;
+            filter: blur(20px); /* Increased blur effect */
+            z-index: -1;
+        }
+
+        /* Back button styles */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: transparent;
+            color: #FF5733;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* Signup container styles */
+        .signup-container {
+            background-color: rgba(0, 0, 0, 0.5); /* Transparent black background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
+            width: 300px;
+            text-align: center;
+            position: relative; /* Ensure it stays above the background */
+        }
+
+        /* Signup form styles */
+        .signup-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .signup-form h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.8); /* Light background for readability */
+        }
+
+        button[type="submit"] {
+            padding: 10px;
+            background-color: #FF5733;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #C70039;
+        }
+
+        /* Sign in link styles */
+        .signin-link {
+            margin-top: 10px;
+        }
+
+        .signin-link a {
+            color: #FF5733;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .signin-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">← Back</a>
+    <div class="signup-container">
+        <form action="/signup-owner" method="POST" class="signup-form">
+            <h2>Owner Sign Up</h2>
+            <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Choose a username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Choose a password" required pattern="(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}" title="Password must be at least 6 characters long and contain at least one uppercase letter, one digit, and one special character.">
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+        <div class="signin-link">
+            <p>Already have an account? <a href="login.html">Log in here</a></p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request House</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('26.jpg'); /* Replace with your image path */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #ecf0f1;
+      overflow: hidden;
+    }
+
+    .blur-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      filter: blur(10px);
+      z-index: -1;
+    }
+
+    .container {
+      background: rgba(44, 62, 80, 0.85); /* Semi-transparent background */
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      backdrop-filter: blur(10px); /* Blur effect */
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input, select, button {
+      margin-bottom: 15px;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+    }
+
+    input, select {
+      background-color: #ecf0f1;
+      color: #2c3e50;
+    }
+
+    button {
+      background-color: #e74c3c;
+      color: #ecf0f1;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <div class="blur-background"></div>
+  <div class="container">
+    <h1>Request House</h1>
+    <form id="request-form">
+      <input type="hidden" id="houseId" name="houseId" value="">
+      <label for="tenantName">Your Name:</label>
+      <input type="text" id="tenantName" name="tenantName" required>
+      
+      <label for="tenantContact">Contact Information:</label>
+      <input type="text" id="tenantContact" name="tenantContact" required>
+      
+      <label for="contactMethod">Preferred Contact Method:</label>
+      <select id="contactMethod" name="contactMethod" required>
+        <option value="phone">Phone</option>
+        <option value="email">Email</option>
+      </select>
+      
+      <button type="submit">Submit Request</button>
+    </form>
+  </div>
+
+  <script>
+    // Fetch the house ID from the URL query string
+    const urlParams = new URLSearchParams(window.location.search);
+    const houseId = urlParams.get('houseId');
+    document.getElementById('houseId').value = houseId;
+
+    // Function to validate phone number
+    function isValidPhoneNumber(phone) {
+      const phoneRegex = /^[0-9]{10}$/;
+      return phoneRegex.test(phone);
+    }
+
+    // Function to validate email
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    document.getElementById('request-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const tenantName = document.getElementById('tenantName').value;
+      const tenantContact = document.getElementById('tenantContact').value;
+      const contactMethod = document.getElementById('contactMethod').value;
+
+      // Validate the contact information based on the selected contact method
+      if (contactMethod === 'phone' && !isValidPhoneNumber(tenantContact)) {
+        alert('Please enter a valid 10-digit phone number.');
+        return;
+      }
+      if (contactMethod === 'email' && !isValidEmail(tenantContact)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      try {
+        const response = await fetch('/request-house', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ houseId, tenantName, tenantContact, contactMethod })
+        });
+
+        if (response.ok) {
+          alert('Request submitted successfully');
+        } else {
+          alert('Error submitting request');
+        }
+      } catch (error) {
+        console.error('Error submitting request:', error);
+        alert('Error submitting request');
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Houses - House Rental System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a; /* Dark background */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .house-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .house-item {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .house-item img {
+            width: 150px; /* Adjust as needed */
+            height: 100px; /* Adjust as needed */
+            object-fit: cover; /* Ensures image fits well */
+            border-radius: 5px;
+        }
+        .house-details {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .house-details h2 {
+            margin-bottom: 10px;
+        }
+        .house-details p {
+            margin-bottom: 5px;
+        }
+        .delete-button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            align-self: flex-start;
+        }
+        .delete-button:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Houses</h1>
+    <div class="house-container" id="house-container">
+        <!-- Houses will be injected here -->
+    </div>
+    <script>
+        async function fetchHouses() {
+            try {
+                const response = await fetch('/api/owner-houses');
+                if (response.ok) {
+                    const houses = await response.json();
+                    const container = document.getElementById('house-container');
+
+                    if (houses.length === 0) {
+                        const noPostsElement = document.createElement('p');
+                        noPostsElement.textContent = 'No posts';
+                        container.appendChild(noPostsElement);
+                        return;
+                    }
+
+                    houses.forEach(house => {
+                        const houseElement = document.createElement('div');
+                        houseElement.className = 'house-item';
+                        houseElement.innerHTML = `
+                            <img src="/uploads/${house.imagePath}" alt="${house.title}">
+                            <div class="house-details">
+                                <h2>${house.title}</h2>
+                                <p>${house.description}</p>
+                                <p><strong>Location:</strong> ${house.location}</p>
+
+                                <p><strong>Price:</strong> ${house.price}</p>
+                                <p><strong>Type:</strong> ${house.houseType}</p>
+                                <p><strong>Phone:</strong> ${house.phone}</p>
+                                <p><strong>Email:</strong> ${house.email}</p>
+                                <button class="delete-button" data-id="${house._id}">Delete</button>
+                            </div>
+                        `;
+                        container.appendChild(houseElement);
+                    });
+                    addDeleteEventListeners();
+                } else {
+                    console.error('Failed to fetch houses:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching houses:', error);
+            }
+        }
+
+        function addDeleteEventListeners() {
+            const deleteButtons = document.querySelectorAll('.delete-button');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    const houseId = event.target.getAttribute('data-id');
+                    try {
+                        const response = await fetch(`/api/owner-houses/${houseId}`, {
+                            method: 'DELETE',
+                        });
+                        if (response.ok) {
+                            event.target.closest('.house-item').remove();
+                            // If no more house items are left, show "No posts" message
+                            if (document.querySelectorAll('.house-item').length === 0) {
+                                const container = document.getElementById('house-container');
+                                const noPostsElement = document.createElement('p');
+                                noPostsElement.textContent = 'No posts';
+                                container.appendChild(noPostsElement);
+                            }
+                        } else {
+                            console.error('Failed to delete house:', response.statusText);
+                        }
+                    } catch (error) {
+                        console.error('Error deleting house:', error);
+                    }
+                });
+            });
+        }
+
+        fetchHouses();
+    </script>
+</body>
+</html>
+
+
+

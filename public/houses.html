@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Listings</title>
+    <style>
+        body {
+            background: url('26.jpg') no-repeat center center fixed; /* Background image */
+            background-size: cover; /* Cover the whole page */
+            backdrop-filter: blur(10px); /* Blur effect */
+            color: #333; /* Dark text color */
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #fff; /* White text color */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #house-list {
+            margin-top: 20px;
+        }
+        .house-item {
+            display: flex; /* Use flexbox to create side-by-side layout */
+            background-color: rgba(255, 255, 255, 0.8); /* White background with transparency */
+            border: 1px solid #ddd; /* Light gray border */
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .house-item img {
+            width: 350px; /* Increased width for the image */
+            height: 280px; /* Increased height for the image */
+            object-fit: cover; /* Crop the image to fit the dimensions */
+            border-radius: 8px;
+            margin-right: 15px; /* Space between image and details */
+        }
+        .house-details {
+            flex: 1; /* Take remaining space */
+        }
+        .house-details h2 {
+            color: #333;
+            font-size: 24px; /* Larger font size for house titles */
+            margin-bottom: 10px;
+        }
+        .house-details p {
+            color: #666; /* Slightly darker text color for paragraphs */
+            font-size: 16px; /* Increased font size for house details */
+            margin-bottom: 8px;
+        }
+        .house-details .label {
+            font-weight: bold;
+            color: #333; /* Darker color for labels */
+        }
+        .house-details button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 4px;
+            font-size: 16px; /* Font size for button text */
+        }
+        .house-details button:hover {
+            background-color: #555; /* Darker hover color */
+        }
+    </style>
+</head>
+<body>
+    <h1>House Listings</h1>
+    <div id="house-list"></div>
+
+    <script>
+        // Function to get query parameters
+        function getQueryParams() {
+            const params = {};
+            const queryString = window.location.search.substring(1);
+            const pairs = queryString.split("&");
+            pairs.forEach(pair => {
+                const [key, value] = pair.split("=");
+                if (key && value) {
+                    params[key] = decodeURIComponent(value.replace(/\+/g, " "));
+                }
+            });
+            return params;
+        }
+
+        // Function to fetch houses based on query parameters
+        function fetchHouses() {
+            const params = getQueryParams();
+            const query = new URLSearchParams(params).toString();
+            fetch(`/api/houses?${query}`)
+                .then(response => response.json())
+                .then(houses => {
+                    const houseList = document.getElementById('house-list');
+                    houseList.innerHTML = ''; // Clear the list before adding new items
+                    houses.forEach(house => {
+                        console.log(house); // Log house object to inspect its properties
+                        const houseElement = document.createElement('div');
+                        houseElement.classList.add('house-item'); // Adding house-item class for styling
+                        houseElement.innerHTML = `
+                            <img src="/uploads/${house.imagePath}" alt="${house.title}">
+                            <div class="house-details">
+                                <h2>${house.title}</h2>
+                                <p><span class="label">Location:</span> ${house.location}</p>
+                                <p><span class="label">Description:</span> ${house.description}</p>
+                                ${house.locationLink ? `<p><span class="label">Location Link:</span> <a href="${house.locationLink}" target="_blank">${house.locationLink}</a></p>` : ''}
+                                <p><span class="label">Price:</span> ${house.price}</p>
+                                <p><span class="label">Type of House:</span> ${house.houseType}</p>
+                                <p><span class="label">Phone:</span> ${house.phone}</p>
+                                <p><span class="label">Email:</span> ${house.email}</p>
+                                <button onclick="request('${house._id}')">Request</button>
+                            </div>
+                        `;
+                        houseList.appendChild(houseElement);
+                    });
+                })
+                .catch(error => console.error('Error fetching houses:', error));
+        }
+
+        // Function to handle request info button click
+        function request(houseId) {
+            window.location.href = 'request.html?houseId=' + houseId;
+        }
+
+        // Fetch houses when the page loads
+        document.addEventListener('DOMContentLoaded', fetchHouses);
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

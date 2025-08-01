@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Owner Requests</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('26.jpg') no-repeat center center/cover;
+      filter: blur(20px);
+      z-index: -1;
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(44, 62, 80, 0.7); /* Semi-transparent overlay */
+      z-index: -1;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    #requests-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 0 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #34495e;
+      text-align: left;
+    }
+
+    th {
+      background-color: #34495e;
+    }
+
+    tr:nth-child(even) {
+      background-color: #3b5998;
+    }
+
+    tr:hover {
+      background-color: #2980b9;
+      transition: background-color 0.3s ease;
+    }
+
+    #no-requests {
+      text-align: center;
+      margin-top: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      th, td {
+        padding: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Requests</h1>
+  <div id="requests-container">
+    <table id="requests-table">
+      <thead>
+        <tr>
+          <th>House Title</th>
+          <th>Tenant Name</th>
+          <th>Contact</th>
+          <th>Method</th>
+        </tr>
+      </thead>
+      <tbody id="requests-list">
+      </tbody>
+    </table>
+    <div id="no-requests">No requests found.</div>
+  </div>
+
+  <script>
+    async function fetchRequests() {
+      try {
+        const response = await fetch('/api/owner-requests');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const requests = await response.json();
+        console.log('Fetched requests:', requests); // Add this line to debug
+  
+        const requestsList = document.getElementById('requests-list');
+        const noRequests = document.getElementById('no-requests');
+        const requestsTable = document.getElementById('requests-table');
+  
+        if (requests.length === 0) {
+          noRequests.style.display = 'block';
+          requestsTable.style.display = 'none';
+        } else {
+          noRequests.style.display = 'none';
+          requestsTable.style.display = 'table';
+  
+          requests.forEach(request => {
+            const row = document.createElement('tr');
+            if (request.houseId) {
+              row.innerHTML = `
+                <td>${request.houseId.title}</td>
+                <td>${request.tenantName}</td>
+                <td>${request.tenantContact}</td>
+                <td>${request.contactMethod}</td>
+              `;
+            } else {
+              row.innerHTML = `
+                <td>House title missing</td>
+                <td>${request.tenantName}</td>
+                <td>${request.tenantContact}</td>
+                <td>${request.contactMethod}</td>
+              `;
+            }
+            requestsList.appendChild(row);
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching requests:', error);
+      }
+    }
+  
+    fetchRequests();
+  </script>
+  
+  
+        
+</body> 
+</html>
+
+
+
+
+

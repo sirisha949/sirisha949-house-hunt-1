@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Your House - House Rental System</title>
+    <style>
+        /* Reset default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styles */
+        body {
+            font-family: Arial, sans-serif;
+            background: url('26.jpg') no-repeat center center fixed; /* Background image */
+            background-size: cover; /* Cover the whole viewport */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden; /* Hide overflow to maintain clean look */
+            position: relative; /* Ensure positioning for the pseudo-element */
+        }
+
+        /* Pseudo-element for the blurred background */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit; /* Use the background from the body */
+            filter: blur(8px); /* Adjust the blur effect */
+            z-index: -1; /* Place behind the main content */
+        }
+
+        /* Post house container styles */
+        .post-house-container {
+            background-color: rgba(17, 16, 16, 0.7); /* Semi-transparent background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
+            width: 900px; /* Width of the form container */
+            text-align: center;
+            position: relative; /* Ensure content positioning */
+        }
+
+        /* Post house form styles */
+        .post-house-form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .post-house-form h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            margin-top: 50px; /* Adjusted margin to move the heading down */
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            width: 48%; /* Adjusted width to fit two in a row */
+        }
+
+        .form-group-full {
+            width: 100%;
+        }
+
+        .form-group label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 10px;
+            width: 100%; /* Make input, textarea, select take full width */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .form-group input[type="file"] {
+            padding: 10px; /* Adjust padding to match other inputs */
+            max-width: 100%; /* Ensure file input fits within container */
+            border: 1px solid #ccc; /* Add border for consistency */
+        }
+
+        button[type="submit"] {
+            padding: 12px; /* Increased padding for a larger button */
+            background-color: #FF5733;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 100%; /* Make button take full width */
+            max-width: 200px; /* Restrict button width */
+            margin: 20px auto 0; /* Center button horizontally with margin */
+        }
+
+        button[type="submit"]:hover {
+            background-color: #C70039;
+        }
+    </style>
+</head>
+<body>
+    <div class="post-house-container">
+        <h2 style="margin-bottom: 20px;">Post Your House</h2> <!-- Heading for the form section -->
+        <form action="/post-house" method="POST" enctype="multipart/form-data" class="post-house-form">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" placeholder="Enter title for your house listing" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Enter description of your house" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" placeholder="Enter location of your house" required>
+            </div>
+            <div class="form-group">
+                <label for="locationLink">Location Link</label>
+                <input type="url" id="locationLink" name="locationLink" placeholder="Enter location link of your house">
+            </div>
+            <div class="form-group">
+                <label for="price">Price </label>
+                <input type="number" id="price" name="price" placeholder="Enter price per month" required>
+            </div>
+            <div class="form-group">
+                <label for="houseType">Type of House</label>
+                <select id="houseType" name="houseType" required>
+                    <option value="" disabled selected>Select house type</option>
+                    <option value="individual">Individual House</option>
+                    <option value="apartment">Apartment</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" pattern="\d{10}" title="Please enter a 10-digit phone number" placeholder="Enter your phone number" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+            </div>
+            <div class="form-group form-group-full">
+                <label for="image">Upload Image</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+            </div>
+            <button type="submit" class="form-group-full">Post</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password - House Rental System</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Reset default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styles */
+        body {
+            font-family: Arial, sans-serif;
+            background: url('26.jpg') no-repeat center center fixed; 
+            background-size: cover;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+            filter: blur(0px); /* Default blur effect, adjustable */
+        }
+
+        /* Home button styles */
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+        }
+
+        .home-button a {
+            color: #FF5733;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .home-button a:hover {
+            text-decoration: underline;
+        }
+
+        /* Login container styles */
+        .login-container {
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent black background with blur effect */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
+            width: 300px;
+            text-align: center;
+            backdrop-filter: blur(10px); /* Blur effect for the background */
+        }
+
+        /* Login form styles */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-form h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #FF5733;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #FF5733;
+        }
+
+        .form-group input {
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            background-color: #333;
+            color: white;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            box-shadow: 0 0 5px #FF5733;
+        }
+
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        button[type="submit"] {
+            padding: 10px;
+            background-color: #FF5733;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #C70039;
+        }
+
+        /* Back to login link styles */
+        .back-to-login {
+            margin-top: 20px;
+        }
+
+        .back-to-login a {
+            color: #FF5733;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-to-login a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="home-button">
+        <a href="p.html"><i class="fas fa-home"></i> Home</a>
+    </div>
+    <div class="login-container">
+        <form id="reset-password-form" class="login-form">
+            <h2>Reset Password</h2>
+            <input type="hidden" id="token" name="token" value="">
+            <div class="form-group">
+                <label for="new-password">New Password</label>
+                <input type="password" id="new-password" name="new-password" placeholder="Enter new password" required>
+                <div id="password-error" class="error-message">Password must be at least 6 characters long, contain one uppercase letter, one special symbol, and one digit.</div>
+            </div>
+            <button type="submit">Reset Password</button>
+        </form>
+        <div class="back-to-login">
+            <p><a href="login.html">Back to login</a></p>
+        </div>
+    </div>
+    <script>
+        function validatePassword(password) {
+            const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
+            return passwordPattern.test(password);
+        }
+
+        document.getElementById('reset-password-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const newPassword = document.getElementById('new-password').value;
+            const token = document.getElementById('token').value;
+            const passwordError = document.getElementById('password-error');
+
+            if (!validatePassword(newPassword)) {
+                passwordError.style.display = 'block';
+                return;
+            } else {
+                passwordError.style.display = 'none';
+            }
+
+            try {
+                const response = await fetch('/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ newPassword, token })
+                });
+
+                const result = await response.json();
+                alert(result.message);
+                if (result.success) {
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+    </script>
+</body> 
+</html>
+
+
+
